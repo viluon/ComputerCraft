@@ -1,0 +1,22 @@
+while true do
+false
+true
+local function 
+local 
+tostring%(
+tonumber%(
+function%(%)
+function
+elseif 
+if 
+else
+return 
+then
+while 
+for 
+coroutine.create%(
+coroutine.resume%(
+coroutine.running%(%)
+coroutine.status%(
+coroutine.wrap%(
+end
