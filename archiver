@@ -102,7 +102,7 @@ target.write(t)
 target:close()
 
 print("FileSize comprimed:"..fs.getSize(args[2]))
-one=tonumber(shell.resolve(fs.getSize(args[1])))/100
+one=tonumber(fs.getSize(shell.resolve(args[1])))/100
 size=fs.getSize(args[2])
 --[[DEBUG
 print("fs.getSize(...):"..fs.getSize(args[1]))
