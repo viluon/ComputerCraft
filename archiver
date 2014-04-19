@@ -105,6 +105,7 @@ print("FileSize comprimed:"..fs.getSize(args[2]))
 one=tonumber(fs.getSize(args[1]))/100
 size=fs.getSize(args[2])
 --DEBUG
+print("fs.getSize(...):"..fs.getSize(args[1]))
 print("one:"..one)
 print("size:"..size)
 --/DEBUG
