@@ -37,9 +37,9 @@ end
 --COMPRESS
 local function compress(...)
 local args={...}
-local file=fs.open(tostring(args[1]),"r")
-print("FileSize original:"..fs.getSize(shell.resolve(tostring(args[1]))))
-t=file.readAll()
+local file=fs.open(shell.resolve(tostring(args[1])),"r")
+print("FileSize original:"..fs.getSize(shell.resolve(tostring(args[1])))) print("asd")
+if file then t=file.readAll() else error("Requested source file doesn't exist.") end
 file:close()
 --FIRST ROUND SYMBOL @ (12x)
 r("true","@ě") --new format
