@@ -36,10 +36,10 @@ end
 
 --COMPRESS
 local function compress(...)
-local args={...}
+local args={...}--ARGS ARE SOLVED BEFORE!!!
 local file=fs.open(shell.resolve(tostring(args[1])),"r")
 print("FileSize original:"..fs.getSize(shell.resolve(tostring(args[1])))) print("asd")
-if file then t=file.readAll() else error("Requested source file doesn't exist.") end
+if file then t=file.readAll() else error("Can't open:Requested source file doesn't exist.") end
 file:close()
 --FIRST ROUND SYMBOL @ (12x)
 r("true","@ě") --new format
@@ -104,13 +104,13 @@ target:close()
 print("FileSize comprimed:"..fs.getSize(args[2]))
 one=fs.getSize(args[1])/100
 size=fs.getSize(args[2])
-percent=100-size/one
+percent=100-(size/one)
 print("comprimed by "..percent.."%")
 end
 
 --EXTRACT
 local function extract(...)
-local args={...}
+local args={...}--ARGS ARE SOLVED BEFORE!!!
 local file=fs.open(shell.resolve(tostring(args[1])),"r") print("asd")
 t=file.readAll()
 file:close()
