@@ -104,6 +104,10 @@ target:close()
 print("FileSize comprimed:"..fs.getSize(args[2]))
 one=fs.getSize(args[1])/100
 size=fs.getSize(args[2])
+--DEBUG
+print("one:"..one)
+print("size:"..size)
+--/DEBUG
 percent=100-(size/one)
 print("comprimed by "..percent.."%")
 end
