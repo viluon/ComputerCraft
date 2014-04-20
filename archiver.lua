@@ -2,7 +2,7 @@
 Pure Lua archiver made by Andy73 a.k.a. viluon
 
 Copyright 2014
-version 0.31 BETA (3rd public release)
+version 0.3.1 BETA (3rd public release)
 
 usage: archiver <compress|extract|help> <file input path> <file output path>
 
@@ -117,7 +117,7 @@ end
 local function extract(...)
 local args={...}--ARGS ARE SOLVED BEFORE!!!
 local file=fs.open(shell.resolve(tostring(args[1])),"r") print("asd")
-t=file.readAll()
+if file then t=file.readAll() else error("Can't open:Requested source file doesn't exist.") end
 file:close()
 --FIRST ROUND SYMBOL @ (12x)
 r("@ě","true")
