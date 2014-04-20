@@ -2,7 +2,7 @@
 Pure Lua archiver made by Andy73 a.k.a. viluon
 
 Copyright 2014
-version 0.3.1 BETA (3rd public release)
+version 0.3.2 BETA (4th public release)
 
 usage: archiver <compress|extract|help> <file input path> <file output path>
 
