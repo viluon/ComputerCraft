@@ -2,7 +2,7 @@
 Pure Lua archiver made by Andy73 a.k.a. viluon
 
 Copyright 2014
-version 0.4 BETA (5th public release)
+version 0.4b ALPHA (5th public release)
 
 usage: archiver <compress|extract|help> <file input path> <file output path>
 
@@ -98,7 +98,7 @@ local tDictionaryB={
 
 local function help()
 print("Pure Lua archiver by Andy a.k.a. viluon copyright 2014")
-print("version 0.4a BETA")
+print("version 0.4b ALPHA")
 print("")
 print("Current dictionary size: "..s.." keywords")
 print("") term.setBackgroundColor(colors.cyan)
