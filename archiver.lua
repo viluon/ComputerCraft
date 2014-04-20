@@ -13,7 +13,7 @@ local s=48
 
 local function help()
 print("Pure Lua archiver by Andy a.k.a. viluon copyright 2014")
-print("version 0.3 BETA")
+print("version 0.3.2 BETA")
 print("")
 print("Current dictionary size: "..s.." keywords")
 print("")
