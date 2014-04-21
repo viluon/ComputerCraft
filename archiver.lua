@@ -2,21 +2,109 @@
 Pure Lua archiver made by Andy73 a.k.a. viluon
 
 Copyright 2014
-version 0.3.2 BETA (4th public release)
+version 0.4 BETA (5th public release)
 
 usage: archiver <compress|extract|help> <file input path> <file output path>
 
-FUNCTIONAL!!!
+@h@WIP
 ]]
 
-local s=48
+local s="?"
+local tArgs={...}
+local t=nil
+local tOrigin={} 
+local tDictionaryA={ 
+"@", 
+"#", 
+"$", 
+"*", 
+"&", 
+"/", 
+"~", 
+"|", 
+"!", 
+"•", 
+"√", 
+"π", 
+"÷", 
+"×", 
+"£", 
+"¢", 
+"€", 
+"°", 
+"_", 
+"™", 
+"®", 
+"©", 
+"¶", 
+"^", } 
+local tDictionaryB={ 
+"á", 
+"à", 
+"â", 
+"ä", 
+"æ", 
+"ã", 
+"å", 
+"ā", 
+"ě", 
+"é", 
+"è", 
+"ê", 
+"ë", 
+"ę", 
+"ė", 
+"ē", 
+"ï", 
+"î", 
+"í", 
+"ī", 
+"ì", 
+"į", 
+"ò", 
+"ô", 
+"ö", 
+"ó", 
+"ō", 
+"ø", 
+"œ", 
+"õ", 
+"ů", 
+"ú", 
+"û", 
+"ü", 
+"ù", 
+"ū", 
+"ý", 
+"ÿ", 
+
+"ř", 
+"ť", 
+"ź", 
+"ž", 
+"ż", 
+"š", 
+"ß", 
+"ś", 
+"ď", 
+"ć", 
+"č", 
+"ç", 
+"ń", 
+"ň", 
+"ñ", 
+"`", } 
+
 
 local function help()
 print("Pure Lua archiver by Andy a.k.a. viluon copyright 2014")
-print("version 0.3.2 BETA")
+print("version 0.4a BETA")
 print("")
 print("Current dictionary size: "..s.." keywords")
-print("")
+print("") term.setBackgroundColor(colors.cyan)
+print(string.rep("-",term.getSize())) term.setTextColor(colors.black)
+print("FAQ: I am getting an error when accessing a file in ../ directory")
+print("  Yes, that is a common problem, I am working on a fix now. Please use the current directory until I fix this (some weird behaviour in shell.resolve :( )") term.setBackgroundColor(colors.black);term.setTextColor(colors.white)
 print("Please note:Beta versions can cause unexpected data changes. Andy is not responsible for any data corruption or removals caused by this program. Use at your own risk.")
 end
 
@@ -26,9 +114,23 @@ print(" archiver <compress|extract|help> <file input path> <file output path>")
 print("'compress','extract' or 'help' can be shortened to 'c','e' or '?'")
 end
 
-local tArgs={...}
-
-local t=nil
+local function loadOrg() 
+local iorg=0 
+local org=fs.open(shell.resolve(".").."/org","r")
+if org then
+line=org.readLine()
+while line do 
+iorg=iorg+1 
+table.insert(tOrigin,iorg,line) 
+line=org.readLine()
+--print(iorg)
+end 
+org:close()
+s=iorg
+else
+error("Origin file doesn't exist (\"./org\").")
+end
+end
 
 local function r(a,b)
 t=string.gsub(t,a,b)
@@ -38,150 +140,69 @@ end
 local function compress(...)
 local args={...}--ARGS ARE SOLVED BEFORE!!!
 local file=fs.open(shell.resolve(tostring(args[1])),"r")
-print("FileSize original:"..fs.getSize(shell.resolve(tostring(args[1])))) print("asd")
+print("FileSize original:"..fs.getSize(shell.resolve(tostring(args[1])))) --print("asd")
 if file then t=file.readAll() else error("Can't open:Requested source file doesn't exist.") end
 file:close()
---FIRST ROUND SYMBOL @ (12x)
-r("true","@ě") --new format
-r("false","@š")
-r("setTextScale","@č")
-r("setBackgroundColor","@ř")
-r("os.loadAPI","@ž")
-r("color","@ý")
-r("setTextColor","@á")
-r("text","@í")
-r("Text","@é")
-r("write","@ú")
-r("elseif","@ů")
-r("local","@ˇ")
-r("function","@´")
---SECOND ROUND SYMBOL # (12x)
-r("then","#ě")
-r("end","#š")
-r("else","#č")
-r("tostring%(","#ř")
-r("tonumber%(","#ž")
-r("string","#ý")
-r("math","#á")
-r("=os.pullEventRaw%(","#í")
-r("=os.pullEvent%(","#é")
-r("= os.pullEventRaw%(","#ú")
-r("= os.pullEvent%(","#ů")
-r("window","#ˇ")
-r("process","#´")
---THIRD ROUND SYMBOL ! (12x)
-r("and","!ě")
-r("not","!š")
-r("print","!č")
-r(" == ","!ř")
-r(" ~= ","!ž")
-r("= fs.exists%(","!ý")
-r("=pcall%(","!á")
-r("= pcall%(","!í")
-r("pcall%(","!é")
-r("=fs.open%(","!ú")
-r("= fs.open%(","!ů")
-r("fs.exists%(","!ˇ")
-r("print%(","!´")
---FOURTH ROUND SYMBOL / (12x)
-r("=fs.isDir%(","/š")
-r("= fs.isDir%(","/č")
-r("fs.isDir%(","/ř")
-r("=fs.isReadOnly%(","/ž")
-r("= fs.isReadOnly%(","/ý")
-r("fs.isReadOnly%(","/á")
-r("=fs.getDrive%(","/í")
-r("= fs.getDrive%(","/é")
-r("fs.getDrive%(","/ú")
-r("=fs.getSize%(","/ů")
-r("= fs.getSize%(","/ˇ")
-r("fs.getSize%(","/´")
+local b=0
+for a=1,#tDictionaryA do 
+    for index=1,#tDictionaryB do 
+     b=b+1 
+     if b>#tOrigin then break end 
+     
+     r(tostring(tOrigin[b]),tostring(tDictionaryA[a])..tostring(tDictionaryB[index])) 
+    end 
+   end 
 
-local target=fs.open(tostring(args[2]),"w")
+local target=fs.open(shell.resolve(tostring(args[2])),"w")
+if not target then error("Can't write:Taget path is invalid. Check the help for more info.") end
 target.write(t)
 target:close()
 
-print("FileSize comprimed:"..fs.getSize(args[2]))
-one=tonumber(fs.getSize(shell.resolve(args[1])))/100
-size=fs.getSize(args[2])
+print("FileSize comprimed:"..fs.getSize(shell.resolve(args[2])))
+local one=tonumber(fs.getSize(shell.resolve(args[1])))/100
+local size=fs.getSize(shell.resolve(args[2]))
+local calc=tonumber(size/one)
+
 --[[DEBUG
-print("fs.getSize(...):"..fs.getSize(args[1]))
+print("fs.getSize(...):"..fs.getSize(shell.resolve(tostring(args[1]))))
 print("one:"..one)
 print("size:"..size)
+print("size/one:"..tonumber(size/one))
+print("calc:"..calc)
 --/DEBUG]]
-percent=100-(size/one)
-print("comprimed by "..percent.."%")
+
+print("comprimed by "..(100-tonumber(calc)).."%")
 end
 
 --EXTRACT
 local function extract(...)
 local args={...}--ARGS ARE SOLVED BEFORE!!!
-local file=fs.open(shell.resolve(tostring(args[1])),"r") print("asd")
+local file=fs.open(shell.resolve(tostring(args[1])),"r") --print("asd")
 if file then t=file.readAll() else error("Can't open:Requested source file doesn't exist.") end
 file:close()
---FIRST ROUND SYMBOL @ (12x)
-r("@ě","true")
-r("@š","false")
-r("@č","setTextScale")
-r("@ř","setBackgroundColor")
-r("@ž","os.loadAPI")
-r("@ý","color")
-r("@á","setTextColor")
-r("@í","text")
-r("@é","Text")
-r("@ú","write")
-r("@ů","elseif")
-r("@ˇ","local")
-r("@´","function")
---SECOND ROUND SYMBOL # (12x)
-r("#ě","then")
-r("#š","end")
-r("#č","else")
-r("#ř","tostring%(")
-r("#ž","tonumber%(")
-r("#ý","string")
-r("#á","math")
-r("#í","=os.pullEventRaw%(")
-r("#é","=os.pullEvent%(")
-r("#ú","= os.pullEventRaw%(")
-r("#ů","= os.pullEvent%(")
-r("#ˇ","window")
-r("#´","process")
---THIRD ROUND SYMBOL ! (12x)
-r("!ě","and")
-r("!š","not")
-r("!č","print")
-r("!ř"," == ")
-r("!ž"," ~= ")
-r("!ý","= fs.exists%(")
-r("!á","=pcall%(")
-r("!í","= pcall%(")
-r("!é","pcall%(")
-r("!ú","=fs.open%(")
-r("!ů","= fs.open%(")
-r("!ˇ","fs.exists%(")
-r("!´","print%(")
---FOURTH ROUND SYMBOL / (12x)
-r("/š","=fs.isDir%(")
-r("/č","= fs.isDir%(")
-r("/ř","fs.isDir%(")
-r("/ž","=fs.isReadOnly%(")
-r("/ý","= fs.isReadOnly%(")
-r("/á","fs.isReadOnly%(")
-r("/í","=fs.getDrive%(")
-r("/é","= fs.getDrive%(")
-r("/ú","fs.getDrive%(")
-r("/ů","=fs.getSize%(")
-r("/ˇ","= fs.getSize%(")
-r("/´","fs.getSize%(")
 
-local target=fs.open(args[2],"w")
+local b=0 
+   for a=1,#tDictionaryA do 
+    for index=1,#tDictionaryB do 
+     b=b+1 
+     if b>#tOrigin then break end 
+     r(tostring(tDictionaryA[a])..tostring(tDictionaryB[index]),tostring(tOrigin[b])) 
+    end 
+   end 
+
+local target=fs.open(shell.resolve(tostring(args[2])),"w")
+if not target then error("Can't write:Taget path is invalid. Check the help for more info.") end
 target.write(t)
 target:close()
 
 print("done!")
 end
 
+local function main()
+if not fs.exists(shell.resolve(".").."/org") then
+  pcall(function() print("Attempting to download origin file...") shell.run("pastebin","get","xj4ZABRH","org") end)
+end
+loadOrg()
 if tostring(tArgs[1])=="compress" or tostring(tArgs[1])=="c" then
 compress(tArgs[2],tArgs[3])
 elseif tostring(tArgs[1])=="extract" or tostring(tArgs[1])=="e" then
@@ -191,3 +212,13 @@ help()
 else
 usage()
 end
+end
+------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+main()
+
