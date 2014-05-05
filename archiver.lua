@@ -2,13 +2,19 @@
 Pure Lua archiver made by Andy73 a.k.a. viluon
 
 Copyright 2014
-version 0.4 BETA (5th public release)
+version 0.4.1 BETA (6th public release)
 
 usage: archiver <compress|extract|help> <file input path> <file output path>
+
+Dev notes:
+-that bugfix promised&needed
+-fixed % calc
+-gonna make the use of serialization for org
 
 @h@WIP
 ]]
 
+local additionalMessage=nil
 local s="?"
 local tArgs={...}
 local t=nil
@@ -98,7 +104,7 @@ local tDictionaryB={
 
 local function help()
 print("Pure Lua archiver by Andy a.k.a. viluon copyright 2014")
-print("version 0.4a BETA")
+print("version 0.4.1 BETA")
 print("")
 print("Current dictionary size: "..s.." keywords")
 print("") term.setBackgroundColor(colors.cyan)
@@ -128,7 +134,7 @@ end
 org:close()
 s=iorg
 else
-error("Origin file doesn't exist (\"./org\").")
+error("Origin file doesn't exist (\"./org\"). Download it using 'pastebin get xj4ZABRH org'.")
 end
 end
 
@@ -170,8 +176,9 @@ print("size:"..size)
 print("size/one:"..tonumber(size/one))
 print("calc:"..calc)
 --/DEBUG]]
-
+if calc>99 then calc=math.ceil(calc) additionalMessage="Was file already compressed?" end
 print("comprimed by "..(100-tonumber(calc)).."%")
+print(additionalMessage)
 end
 
 --EXTRACT
